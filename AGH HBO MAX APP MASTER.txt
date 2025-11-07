@@ -1,0 +1,63 @@
+! --- HBO MAX / MAX APP MASTER CUSTOM BLOCKING LIST (AdGuard Home / DNS) ---
+! Version: 2025-11-04 (clean)
+! Purpose: Combine ad, telemetry, SSAI, and manifest nullification rules for HBO / Max.
+! Safe for Onn TV, Android TV, and PC setups with AdGuard Home (keep above generic lists).
+! -------------------------------------------------------------------------
+
+! === 0) ESSENTIAL ALLOWS (entitlement / playback / critical CDNs) ===
+@@||prod-dtc-android-open-measurement.mercury.dnitv.com^
+@@||api.discomax.com^
+@@||playback.api.discomax.com^
+@@||entitlements.api.discomax.com^
+@@||cf.prd.media.h264.io^$important
+@@||cf.amer.prd.media.h264.io^$important
+@@||akm.prd.media.h264.io^$important
+
+! === 1) CORE AD / TELEMETRY BLOCKS ===
+/^([a-z0-9-]+\.)?litix\.io$/
+/^[a-z0-9-]+\.litix\.io$/
+/^[out0-9a-z]+\.litix\.io$/
+/^([a-z0-9-]+\.)?fwmrm\.net$/
+/^[0-9a-z-]+\.v\.fwmrm\.net$/
+||cf.amer-free.prd.media.max.com^$important
+||gmss.use2.prd.api.discomax.com^$important
+||gcp.amer-free.prd.media.max.com^$important
+||abbo7hmaaaaaaaamaaaaaaaaaaaaa.e693b67d00e42.cbr.cloudfront.net^$important
+||fly.amer-free.prd.media.max.com
+/^([^.]+\.)*dnitv\.com$/
+
+! === 2) TELEMETRY / TRACKING CLEANUP (safe to block) ===
+||omtrdc.net^
+||scorecardresearch.com^
+||conviva.com^
+||crashlytics.com^
+||bugsnag.com^
+
+! === 3) REGEX GUARD COVERAGE (catch rotating subdomains) ===
+/^([a-z0-9-]+\.)?cf\.(amer-free|free|edge|prd)\.media\.h264\.io$/
+/^([a-z0-9-]+\.)?api\.discomax\.com$/
+/^([a-z0-9-]+\.)?mercury\.dnitv\.com$/
+/^([a-z0-9-]+\.)?akm\.prd\.media\.h264\.io$/
+
+! === 4) NETWORK-LEVEL / PROTOCOL CONTROLS (optional experimental) ===
+||h264.io^$network,protocol=QUIC
+||discomax.com^$network,protocol=QUIC
+
+! === 5) SAFER MANIFEST NULLIFIERS (preferred: keep manifest shape, empty ad list) ===
+! Keep these active; they empty ad_segments but preserve other fields.
+||busy.any-amer.prd.api.discomax.com/v*/manifest$replace=/("ad_segments"\s*:\s*)\[[\s\S]*?\]/\1[]/,important
+||cf.amer-free.prd.media.h264.io/v*/manifest$replace=/("ad_segments"\s*:\s*)\[[\s\S]*?\]/\1[]/,important
+||akm.prd.media.h264.io/v*/manifest$replace=/("ad_segments"\s*:\s*)\[[\s\S]*?\]/\1[]/,important
+
+! === 6) FALLBACK SURGICAL (only if above fails for a host) ===
+! Use these if a specific player needs the adDecision node emptied instead of ad_segments.
+||busy.any-amer.prd.api.discomax.com/v*/manifest$replace=/("adDecision"\s*:\s*)\{[\s\S]*?\}/\1\{\}/,important
+||cf.amer-free.prd.media.h264.io/v*/manifest$replace=/("adDecision"\s*:\s*)\{[\s\S]*?\}/\1\{\}/,important
+
+! === 7) (KEEP THESE ALLOWS so entitlement/heartbeat/etc still work) ===
+@@||playback.api.discomax.com^
+@@||entitlements.api.discomax.com^
+@@||cf-trickplay.aux.pv-cdn.net^
+@@||playback-heartbeat.hbo.com^
+! -------------------------------------------------------------------------
+
