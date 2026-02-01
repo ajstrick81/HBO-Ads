@@ -9,7 +9,9 @@
 /^([a-z0-9-]+\.)?fwmrm\.net$/
 /^[0-9a-z-]+\.v\.fwmrm\.net$/
 ||cf.amer-free.prd.media.max.com^$important
+||akm.amer-free.prd.media.max.com^$important
 ||gmss.use2.prd.api.discomax.com^$important
 ||gcp.amer-free.prd.media.max.com^$important
 ||fly.amer-free.prd.media.max.com
 /^([^.]+\.)*dnitv\.com$/
+
