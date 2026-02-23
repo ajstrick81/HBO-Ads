@@ -13,5 +13,7 @@
 ||gcp.amer-free.prd.media.max.com^$important
 ||fly.amer-free.prd.media.max.com
 ||akm.amer-free.prd.media.max.com
+||fly.amer-free.prd.media.cnn.com
 /^([^.]+\.)*dnitv\.com$/
+
 
